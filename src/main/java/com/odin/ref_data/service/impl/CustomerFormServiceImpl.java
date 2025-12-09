@@ -38,7 +38,7 @@ public class CustomerFormServiceImpl implements FormService {
 		formDTO.setUserType(CustomerType.CUSTOMER.name().toLowerCase());
 		log.info("Fetching form data for customer : {}", formDTO);
 		List<FormMetadataResponseDTO> data = formRepo.findByModuleAndSubModuleAndUserType(formDTO.getModule(),
-				formDTO.getSubModule(), formDTO.getUserType());
+				formDTO.getSubmodule(), formDTO.getUserType());
 		if (ObjectUtils.isEmpty(data)) {
 			return response.buildResponse(LanguageConstants.EN, ResponseCodes.FAILURE_CODE);
 		}

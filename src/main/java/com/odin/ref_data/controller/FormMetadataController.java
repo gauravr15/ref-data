@@ -23,7 +23,7 @@ public class FormMetadataController {
 	@Autowired
 	private FormFactory formService;
 
-	@PostMapping(APIConstants.PROFILE)
+	@PostMapping
 	public ResponseEntity<Object> getForm(HttpServletRequest req, @RequestBody FormRequestDTO formDTO) {
 		String userType = req.getHeader(ApplicationConstants.USER_TYPE);
 		ResponseDTO response = formService.getInstance(userType).getForm(req, formDTO);

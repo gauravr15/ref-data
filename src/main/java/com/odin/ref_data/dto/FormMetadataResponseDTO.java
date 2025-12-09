@@ -52,4 +52,6 @@ public class FormMetadataResponseDTO {
     private String regex;
     
     private String inputType;
+    
+    private String resource;
 }

@@ -31,7 +31,7 @@ public class FormRepository {
 	public List<FormMetadataResponseDTO> findByModuleAndSubModuleAndUserType(String module, String subModule, String userType) {
 		List<SearchCriteria> searchCriteriaList = new ArrayList<>();
 	    searchCriteriaList.add(new SearchCriteria("module", ":", module,"AND"));
-	    searchCriteriaList.add(new SearchCriteria("subModule", ":", subModule,"AND"));
+	    searchCriteriaList.add(new SearchCriteria("submodule", ":", subModule,"AND"));
 	    searchCriteriaList.add(new SearchCriteria("userType", ":", userType,"AND"));
 	    
 	    // Make the REST call using your utility method
@@ -48,7 +48,7 @@ public class FormRepository {
 	public FormMetadataResponseDTO findByModuleORSubModule(String module, String subModule) {
 		List<SearchCriteria> searchCriteriaList = new ArrayList<>();
 	    searchCriteriaList.add(new SearchCriteria("module", ":", module,"OR"));
-	    searchCriteriaList.add(new SearchCriteria("subModule", ":", subModule,"OR"));
+	    searchCriteriaList.add(new SearchCriteria("submodule", ":", subModule,"OR"));
 	    
 	    // Make the REST call using your utility method
 	    ResponseDTO response = utility.makeRestCall(

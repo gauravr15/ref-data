@@ -17,7 +17,7 @@ public class FormRequestDTO {
 	
 	private String module;
 	
-	private String subModule;
+	private String submodule;
 	
 	//For backend use
 	private String userType;

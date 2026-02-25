@@ -1,8 +1,8 @@
 FROM eclipse-temurin:17-jdk
 WORKDIR /app
-COPY target/profile-service-0.0.1-SNAPSHOT.jar .
+COPY target/ref-data-0.0.1-SNAPSHOT.jar .
 
-EXPOSE 8002
+EXPOSE 9012
 
 # Spring profiles
 ENV SPRING_PROFILES_ACTIVE=production,global
@@ -16,4 +16,4 @@ ENV SPRING_PROFILES_ACTIVE=production,global
 ENV MANAGEMENT_METRICS_ENABLE_ALL=false
 ENV MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE=health,info
 
-CMD ["java","-Xms384m","-Xmx384m","-Dspring.main.allow-bean-definition-overriding=true","-jar","profile-service-0.0.1-SNAPSHOT.jar"]
+CMD ["java","-Xms384m","-Xmx384m","-Dspring.main.allow-bean-definition-overriding=true","-jar","ref-data-0.0.1-SNAPSHOT.jar"]

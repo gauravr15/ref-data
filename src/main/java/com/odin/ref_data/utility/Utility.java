@@ -15,6 +15,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.odin.ref_data.dto.ResponseDTO;
+import com.odin.ref_data.tracing.TraceContext;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -57,14 +58,7 @@ public class Utility {
         	HttpHeaders headers = new HttpHeaders();
             headers.set("Content-Type", "application/json");
 
-            // Add correlation ID to the headers
-            String correlationId = CorrelationIdUtil.getCorrelationId();
-            if (correlationId == null) {
-                // Generate a new correlation ID if not present
-                correlationId = CorrelationIdUtil.generateCorrelationId();
-                CorrelationIdUtil.setCorrelationId(correlationId); // Optionally set it to MDC
-            }
-            headers.set("X-Correlation-ID", correlationId);
+            TraceContext.writeToHttpHeaders(headers);
             headers.set("Content-Type", "application/json");
             HttpEntity<T> entity = new HttpEntity<>(requestBody, headers);
             

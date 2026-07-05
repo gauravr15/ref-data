@@ -1,30 +1,24 @@
 package com.odin.ref_data.utility;
 
-import org.slf4j.MDC;
-
-import java.util.UUID;
+import com.odin.ref_data.tracing.TraceContext;
 
 public class CorrelationIdUtil {
 
-    private static final String CORRELATION_ID_HEADER = "X-Correlation-ID";
-    
-    // Get the correlation ID from MDC
     public static String getCorrelationId() {
-        return MDC.get(CORRELATION_ID_HEADER);
+        return TraceContext.currentTraceId();
     }
 
-    // Set correlation ID in MDC
     public static void setCorrelationId(String correlationId) {
-        MDC.put(CORRELATION_ID_HEADER, correlationId);
+        TraceContext.setTraceId(correlationId);
     }
 
-    // Generate a new correlation ID if none is present
     public static String generateCorrelationId() {
-        return UUID.randomUUID().toString();
+        String traceId = java.util.UUID.randomUUID().toString();
+        TraceContext.setTraceId(traceId);
+        return traceId;
     }
 
-    // Clear correlation ID from MDC after request processing
     public static void clear() {
-        MDC.remove(CORRELATION_ID_HEADER);
+        TraceContext.clear();
     }
 }

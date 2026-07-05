@@ -1,35 +1,31 @@
 package com.odin.ref_data.config;
-import org.slf4j.MDC;
-import org.springframework.stereotype.Component;
-import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.UUID;
+
+import org.springframework.stereotype.Component;
+import org.springframework.web.servlet.HandlerInterceptor;
+
+import com.odin.ref_data.tracing.TraceContext;
 
 @Component
 public class CorrelationIdInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
-        // Extract correlationId from the request header or generate a new one
-        String correlationId = request.getHeader("X-Correlation-ID");
-        if (correlationId == null || correlationId.isEmpty()) {
-            correlationId = UUID.randomUUID().toString();
+        String traceId = TraceContext.resolveTraceId(request);
+        TraceContext.setTraceId(traceId);
+        response.setHeader(TraceContext.CORRELATION_ID_HEADER, traceId);
+        response.setHeader(TraceContext.REQUEST_CHECKSUM_HEADER, traceId);
+        String traceparent = TraceContext.currentTraceparent();
+        if (traceparent != null) {
+            response.setHeader(TraceContext.TRACEPARENT_HEADER, traceparent);
         }
-
-        // Add the correlationId to the MDC (for logging purposes)
-        MDC.put("correlationId", correlationId);
-
-        // Add the correlationId to the response headers
-        response.setHeader("X-Correlation-ID", correlationId);
-
-        return true; // Continue with the next interceptor or the actual handler
+        return true;
     }
 
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
-        // Clear the MDC after the request is complete
-        MDC.clear();
+        TraceContext.clear();
     }
 }
